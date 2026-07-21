@@ -33,8 +33,7 @@ matter most for transfer), not a claim of novel research.
   `006_mustard_bottle`, `011_banana`, `021_bleach_cleanser`, `035_power_drill`,
   `037_scissors`.
 - **Real-world evaluation set:** YCB-V real test images (via the BOP benchmark
-  toolkit), fixed and untouched throughout — this is the ground truth the synthetic
-  data must transfer to.
+  toolkit), fixed and untouched throughout — this is the ground truth the synthetic data must transfer to.
 - **Synthetic data:** generated with BlenderProc, using the official YCB-V CAD
   models loaded via `bproc.loader.load_bop_objs()`, rendered under a sweep of
   domain-randomization configurations.
@@ -57,45 +56,28 @@ randomization).
 ## 4. Methodology
 
 ### Phase A — Baseline pipeline
-Render one low-randomization synthetic variant, train YOLO, evaluate on the real
-YCB-V test set. This is the starting domain-gap measurement and the sanity check
-that the full pipeline (render → train → eval) works end to end.
+Render one low-randomization synthetic variant, train YOLO, evaluate on the real YCB-V test set. This is the starting domain-gap measurement and the sanity check that the full pipeline (render → train → eval) works end to end.
 
 ### Phase B — Sweep and ground-truth curve
-Repeat across all variants. For each: train (or fine-tune from a common starting
-checkpoint, to control compute cost), evaluate real-world mAP, log everything to
-Weights & Biases. This produces the ground-truth relationship between
-randomization configuration and real-world transfer performance — the core
-empirical result of the project.
+Repeat across all variants. For each: train (or fine-tune from a common starting checkpoint, to control compute cost), evaluate real-world mAP, log everything to Weights & Biases.
+This produces the ground-truth relationship between randomization configuration and real-world transfer performance — the core empirical result of the project.
 
 ### Phase C — Gap scorer
-For each variant, compute a distributional distance between the synthetic image
-set and the real reference set in a pretrained feature space (FID or KID, using
-DINOv2 or CLIP features — DINOv2 is preferred since it sets up reuse in Project 3).
-This score requires no training. Compare the gap-score ranking of variants against
-the real mAP ranking from Phase B to test whether the cheap metric predicts the
-expensive outcome.
+For each variant, compute a distributional distance between the synthetic image set and the real reference set in a pretrained feature space (FID or KID, using DINOv2 or CLIP features — DINOv2 is preferred since it sets up reuse in Project 3).
+This score requires no training. Compare the gap-score ranking of variants against the real mAP ranking from Phase B to test whether the cheap metric predicts the expensive outcome.
 
 ### Phase D — Ablation
-Using the Phase B/C data, isolate which individual randomization axes (lighting vs.
-texture vs. render noise vs. pose) contribute most to closing the domain gap, and
-whether that differs by object (e.g., low-texture objects like the banana may be
-more lighting-sensitive than high-texture objects like the cracker box). This is
-the one legitimate empirical claim in the project — keep it honest and bounded to
-what the data actually shows.
+Using the Phase B/C data, isolate which individual randomization axes (lighting vs. texture vs. render noise vs. pose) contribute most to closing the domain gap, and whether that differs by object (e.g., low-texture objects like the banana may be more lighting-sensitive than high-texture objects like the cracker box).
+This is the one legitimate empirical claim in the project — keep it honest and bounded to what the data actually shows.
 
 ### Phase E — Serving
 Wrap the best-performing detector as a Dockerized FastAPI inference service:
-endpoint accepts an image, returns detections. Include the gap scorer as a second
-endpoint: given a new synthetic batch, return a predicted-gap score against the
-stored real reference embeddings, without requiring a training run.
+endpoint accepts an image, returns detections.
+Include the gap scorer as a second endpoint: given a new synthetic batch, return a predicted-gap score against the stored real reference embeddings, without requiring a training run.
 
 ### Phase F — Drift monitoring
-A lightweight monitor that compares incoming "production" image embeddings against
-the stored real reference distribution (e.g., MMD or KS-test on feature
-projections), flags when drift exceeds a threshold, and logs the result. Doesn't
-need to be elaborate — a working detector with a sensible threshold and a log is
-sufficient.
+A lightweight monitor that compares incoming "production" image embeddings against the stored real reference distribution (e.g., MMD or KS-test on feature projections), flags when drift exceeds a threshold, and logs the result.
+Doesn't need to be elaborate — a working detector with a sensible threshold and a log is sufficient.
 
 ## 5. System Architecture
 

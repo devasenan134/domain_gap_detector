@@ -10,6 +10,7 @@ dependencies = [
     "gdown>=6.1.0",
     "numpy>=2.5.0",
     "pillow>=12.3.0",
+    "rich>=15.0.0",
     "torch>=2.12.1",
     "transformers>=5.14.1",
     "ultralytics>=8.4.102",
