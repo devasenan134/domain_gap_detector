@@ -32,6 +32,16 @@ matter most for transfer), not a claim of novel research.
   `002_master_chef_can`, `003_cracker_box`, `005_tomato_soup_can`,
   `006_mustard_bottle`, `011_banana`, `021_bleach_cleanser`, `035_power_drill`,
   `037_scissors`.
+  TARGET_IDS = {
+    1: 0,   # master_chef_can
+    2: 1,   # cracker_box
+    4: 2,   # tomato_soup_can
+    5: 3,   # mustard_bottle
+    10: 4,  # banana
+    12: 5,  # bleach_cleanser
+    15: 6,  # power_drill
+    17: 7   # scissors
+}
 - **Real-world evaluation set:** YCB-V real test images (via the BOP benchmark
   toolkit), fixed and untouched throughout — this is the ground truth the synthetic data must transfer to.
 - **Synthetic data:** generated with BlenderProc, using the official YCB-V CAD
