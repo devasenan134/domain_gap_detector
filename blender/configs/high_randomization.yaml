@@ -1,0 +1,37 @@
+# Upper end of the sweep: every axis randomized aggressively.
+# Intermediate variants (lighting-only, texture-only, ...) are copies of
+# baseline.yaml with one section swapped for the values below.
+
+variant: high_randomization
+num_scenes: 50
+images_per_scene: 10
+val_fraction: 0.1
+seed: 0
+
+objects:
+  per_scene: [3, 8]
+  material_randomization: 1.0
+
+background:
+  type: cc_textures     # needs `blenderproc download cc_textures cc_textures`
+  color: [0.5, 0.5, 0.5]
+  cc_textures_path: cc_textures
+
+lighting:
+  ceiling_strength: [1.0, 10.0]
+  ceiling_color: [[0.5, 0.5, 0.5], [1.0, 1.0, 1.0]]
+  point_light_energy: [50, 400]
+  point_light_color: [[0.5, 0.5, 0.5], [1.0, 1.0, 1.0]]
+
+camera:
+  radius: [0.6, 1.2]
+  elevation_deg: [5, 89]
+  inplane_rot_deg: 45
+  min_visible_objects: 2
+
+render:
+  samples: 16
+  denoiser: false
+
+labels:
+  min_visible_pixels: 200

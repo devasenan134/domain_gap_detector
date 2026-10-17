@@ -1,0 +1,37 @@
+# Phase A: low-randomization baseline.
+# Every axis is pinned to (nearly) a single value so renders look alike.
+
+variant: baseline
+num_scenes: 50          # each scene = one physics drop of objects
+images_per_scene: 10    # camera poses rendered per scene  -> 500 images
+val_fraction: 0.1
+seed: 0
+
+objects:
+  per_scene: [4, 6]     # min/max of the 8 target objects dropped per scene
+  material_randomization: 0.0   # 0 = original YCB textures, 1 = strong roughness/specular jitter
+
+background:
+  type: plain           # plain | cc_textures
+  color: [0.5, 0.5, 0.5]
+  cc_textures_path: cc_textures
+
+lighting:
+  ceiling_strength: [1.5, 1.5]          # emission of the ceiling light plane
+  ceiling_color: [[1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]
+  point_light_energy: [80, 80]
+  point_light_color: [[1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]
+
+camera:
+  # YCB-V real captures sit roughly 0.6–1.2 m from the objects.
+  radius: [0.95, 1.05]
+  elevation_deg: [45, 50]
+  inplane_rot_deg: 0
+  min_visible_objects: 2
+
+render:
+  samples: 64
+  denoiser: true
+
+labels:
+  min_visible_pixels: 200   # drop boxes for nearly fully-occluded objects
