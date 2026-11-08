@@ -12,3 +12,9 @@ wheels/
 # Data
 data/
 cc_textures/
+
+# Training outputs
+runs/
+weights/
+wandb/
+*.pt

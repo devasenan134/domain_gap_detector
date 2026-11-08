@@ -1,0 +1,9 @@
+# Training settings shared by every variant, so only the data changes across the sweep.
+model: yolov8n.pt   # COCO-pretrained common starting checkpoint
+epochs: 50
+patience: 0         # no early stopping, every variant gets the same number of epochs
+imgsz: 640
+batch: 16
+device: mps
+workers: 4
+seed: 0

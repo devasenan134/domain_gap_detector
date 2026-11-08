@@ -27,3 +27,14 @@ macOS: BlenderProc can't install its pip packages inside the protected `Blender.
 
     cd ~/blender/blender-4.2.1-macos-arm64 && cp -R Blender.app blender_unbundled && ln -s Contents/Resources/4.2 blender_unbundled/4.2
     uv run blenderproc run --custom-blender-path ~/blender/blender-4.2.1-macos-arm64/blender_unbundled blender/generate.py blender/configs/baseline.yaml
+
+## Training and real-world evaluation
+
+`src/detector/train.py` trains on one variant with the shared settings in `experiments/train.yaml`, picks the checkpoint on the synthetic val split, then evaluates once on the real test set.
+
+    uv run python src/detector/train.py baseline
+    # -> runs/detect/baseline/weights/best.pt, experiments/results/baseline.json
+
+W&B runs are logged offline by default. Upload them with `wandb sync wandb/offline-run-*`, or set `WANDB_MODE=online`.
+
+Needs the real test set: unzip ycbv_test_bop19.zip into `data/ycbv/`, then run `notebooks/prep_ycbv_test.ipynb`.
