@@ -10,7 +10,7 @@ YCB-V (YCB Video Dataset): Contains 21 household and kitchen objects with rich t
     
 
 textures for scenes
-blenderproc download cc_textures cc_textures/
+uv run python blender/download_textures.py cc_textures 100   # 100 materials at 1K, about 0.5 GB (the stock `blenderproc download cc_textures` pulls all of them, about 55 GB)
 
 ## Synthetic data generation
 
@@ -38,3 +38,9 @@ macOS: BlenderProc can't install its pip packages inside the protected `Blender.
 W&B runs are logged offline by default. Upload them with `wandb sync wandb/offline-run-*`, or set `WANDB_MODE=online`.
 
 Needs the real test set: unzip ycbv_test_bop19.zip into `data/ycbv/`, then run `notebooks/prep_ycbv_test.ipynb`.
+
+## Sweep
+
+`blender/configs/` has one YAML per variant: `baseline`, `high_randomization`, and five single-axis variants (`lighting`, `material`, `background`, `camera`, `noise`) that change one section of the baseline. Render all of them, then train and evaluate each:
+
+    bash experiments/run_variants.sh lighting material camera noise background high_randomization

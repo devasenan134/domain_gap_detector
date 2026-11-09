@@ -1,0 +1,54 @@
+# Only object material (roughness/specular) randomized.
+# Same as baseline.yaml except for the one change below.
+background:
+  cc_textures_path: cc_textures
+  color:
+  - 0.5
+  - 0.5
+  - 0.5
+  type: plain
+camera:
+  elevation_deg:
+  - 45
+  - 50
+  inplane_rot_deg: 0
+  min_visible_objects: 2
+  radius:
+  - 0.95
+  - 1.05
+images_per_scene: 10
+labels:
+  min_visible_pixels: 200
+lighting:
+  ceiling_color:
+  - - 1.0
+    - 1.0
+    - 1.0
+  - - 1.0
+    - 1.0
+    - 1.0
+  ceiling_strength:
+  - 1.5
+  - 1.5
+  point_light_color:
+  - - 1.0
+    - 1.0
+    - 1.0
+  - - 1.0
+    - 1.0
+    - 1.0
+  point_light_energy:
+  - 80
+  - 80
+num_scenes: 50
+objects:
+  material_randomization: 1.0
+  per_scene:
+  - 4
+  - 6
+render:
+  denoiser: true
+  samples: 64
+seed: 0
+val_fraction: 0.1
+variant: material
