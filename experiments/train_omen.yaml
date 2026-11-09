@@ -1,0 +1,10 @@
+# Same as train.yaml, but for the Omen (RTX 4060, CUDA). Every variant in a sweep must use the same file.
+# batch 8 because Qwen already holds 5.4 of the 8 GB; batch 16 peaked at 7.85 GB, too close to the limit.
+model: yolov8n.pt
+epochs: 50
+patience: 0
+imgsz: 640
+batch: 8
+device: 0
+workers: 4
+seed: 0
