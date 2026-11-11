@@ -1,0 +1,86 @@
+{
+  "verified_at": "2026-11-11T04:27:21.659259+00:00",
+  "host": "enderpearl",
+  "root": "/home/devs/code/domain_gap_detector_sweep",
+  "variants": [
+    {
+      "variant": "background",
+      "result_sha256": "dca27fe40f3b08b5cd9a12102b276cea6213f13f595994af22a7f593c326f3d6",
+      "checkpoint": "/home/devs/code/domain_gap_detector_sweep/runs/detect/background/weights/best.pt",
+      "checkpoint_bytes": 6240682,
+      "checkpoint_sha256": "ca5c22071c29d924e1fb8f125eab2d9a9630d8f654b0f168d64dbba0b74a5f88",
+      "train_images": 450,
+      "val_images": 50,
+      "dataset_file_count": 1001,
+      "dataset_sha256": "2231f15d4e8e824c5f5f3243b965c1d9ca67150a5e11f054f65e1e3307d3a997"
+    },
+    {
+      "variant": "baseline",
+      "result_sha256": "1ba602fd563c9499f781b7d4a00d8953daedd7fdaf34404109686e55763c2a8c",
+      "checkpoint": "/home/devs/code/domain_gap_detector_sweep/runs/detect/baseline/weights/best.pt",
+      "checkpoint_bytes": 6240682,
+      "checkpoint_sha256": "56b31d706d9ec100124cab05ecacc8d2eaf3865ec5fd04ab3be0c332e3a2db8a",
+      "train_images": 450,
+      "val_images": 50,
+      "dataset_file_count": 1001,
+      "dataset_sha256": "c6a7fc441639b3c4ea186cb33e99a6fe7c6c215631f5754c5d1e48239f45e9e0"
+    },
+    {
+      "variant": "camera",
+      "result_sha256": "40b5743495a7eddad6093fdff5ec83efc5c15dfa21b8cd098e08b8300cc8293c",
+      "checkpoint": "/home/devs/code/domain_gap_detector_sweep/runs/detect/camera/weights/best.pt",
+      "checkpoint_bytes": 6240682,
+      "checkpoint_sha256": "ce6a1484aa205d0e5b137cd2744efd5a51f6cabaabf58e28938aa951c3ceee4b",
+      "train_images": 450,
+      "val_images": 50,
+      "dataset_file_count": 1001,
+      "dataset_sha256": "6f65f33b287deab75fc30e7df4b206b4a529308e99dffbd10fc4647b08c78c28"
+    },
+    {
+      "variant": "high_randomization",
+      "result_sha256": "e4109fc3451229546ae7e96b17d510007b42a28bc9ccd7c9051b1087e7f63e6d",
+      "checkpoint": "/home/devs/code/domain_gap_detector_sweep/runs/detect/high_randomization/weights/best.pt",
+      "checkpoint_bytes": 6240746,
+      "checkpoint_sha256": "a17cdb4c9c9689439b8602b1795f9c2b88d7dadcdc178048ac8f6f948624db63",
+      "train_images": 450,
+      "val_images": 50,
+      "dataset_file_count": 1001,
+      "dataset_sha256": "2400a25e7109121c3c004ed0ba0329044cc42e92f1950f2e11c8b85642043a74"
+    },
+    {
+      "variant": "lighting",
+      "result_sha256": "b8c93ba4521c0ce9c620290dd99dd505d6b8854d1a3a2c765a1db24aa6fd93c1",
+      "checkpoint": "/home/devs/code/domain_gap_detector_sweep/runs/detect/lighting/weights/best.pt",
+      "checkpoint_bytes": 6240682,
+      "checkpoint_sha256": "33f1db93f88454365588fc6d5da0027d50108e48055d9afda97d5d7183962597",
+      "train_images": 450,
+      "val_images": 50,
+      "dataset_file_count": 1001,
+      "dataset_sha256": "f22ddbfef72131be8b28ad94e3690d6f3810a6019ac99922d56e4f3348ddeab1"
+    },
+    {
+      "variant": "material",
+      "result_sha256": "802952dd2c04e0506faa1870d161b6b6d5dcb4a09bf4f9c1df5425e2fd7bb9a1",
+      "checkpoint": "/home/devs/code/domain_gap_detector_sweep/runs/detect/material/weights/best.pt",
+      "checkpoint_bytes": 6240682,
+      "checkpoint_sha256": "bc73587dd938ac7ed08a12890c916f55431df79f0a901035f395b3dd98ea5c71",
+      "train_images": 450,
+      "val_images": 50,
+      "dataset_file_count": 1001,
+      "dataset_sha256": "defb63dc6f12dec52f8e5fe5e5df551b94e2334c20ce4267e379c4c9474ae856"
+    },
+    {
+      "variant": "noise",
+      "result_sha256": "b21db5289c998f60dbcd2e2e5f3adbbd042284eeca2c1c0ed5f4bfb481af17ca",
+      "checkpoint": "/home/devs/code/domain_gap_detector_sweep/runs/detect/noise/weights/best.pt",
+      "checkpoint_bytes": 6240682,
+      "checkpoint_sha256": "01b086140932c937c915742f2734203423404b74f5d92c28c8adafc9093e8500",
+      "train_images": 450,
+      "val_images": 50,
+      "dataset_file_count": 1001,
+      "dataset_sha256": "3b0229e0b3ef1867d6ae2a9023a2d4af127eb48f9f3a038734a3bbcf94461598"
+    }
+  ],
+  "real_test_file_count": 1500,
+  "real_test_sha256": "1fe49850b5c33a2140e88dec10d8812f100e2baf6b2ca14a5a0f9276f4a0875f"
+}

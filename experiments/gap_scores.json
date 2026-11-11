@@ -1,0 +1,118 @@
+{
+  "model": "facebook/dinov2-small",
+  "revision": "ed25f3a31f01632728cabb09d1542f84ab7b0056",
+  "pooling": "last_hidden_state_cls",
+  "device": "cuda",
+  "real_images": 750,
+  "real_cache_key": "1f04d2d0ef94e95305283be6c54adb090e45c3884d38ce0d95642f89a3720460",
+  "train_cfg": {
+    "model": "yolov8n.pt",
+    "epochs": 50,
+    "patience": 0,
+    "imgsz": 640,
+    "batch": 8,
+    "device": 0,
+    "workers": 4,
+    "seed": 0
+  },
+  "variants": [
+    {
+      "variant": "baseline",
+      "synthetic_images": 450,
+      "cache_key": "5190aaa1dbfaa3bf228d1d757b6b7b0966473a33a82af3def0e62fd3ff9d2ece",
+      "result_sha256": "1ba602fd563c9499f781b7d4a00d8953daedd7fdaf34404109686e55763c2a8c",
+      "dinov2_fid": 1665.2297262136592,
+      "dinov2_kid": 83.91366650584231,
+      "real_map50": 0.3342139073044027,
+      "real_map50_95": 0.2106677362025143
+    },
+    {
+      "variant": "lighting",
+      "synthetic_images": 450,
+      "cache_key": "1adad9670851edcfc8963b3fbde9ab28c5ca27bfae99c87b152920a24c71691b",
+      "result_sha256": "b8c93ba4521c0ce9c620290dd99dd505d6b8854d1a3a2c765a1db24aa6fd93c1",
+      "dinov2_fid": 1676.3096744519844,
+      "dinov2_kid": 83.81605477780401,
+      "real_map50": 0.3205454979204815,
+      "real_map50_95": 0.20165874405900333
+    },
+    {
+      "variant": "material",
+      "synthetic_images": 450,
+      "cache_key": "e8706e559597eb548842c9702f4ca29dd3547aabc49ae12583efd0ee208f7f21",
+      "result_sha256": "802952dd2c04e0506faa1870d161b6b6d5dcb4a09bf4f9c1df5425e2fd7bb9a1",
+      "dinov2_fid": 1647.440127962637,
+      "dinov2_kid": 81.60921009291638,
+      "real_map50": 0.40073928052406815,
+      "real_map50_95": 0.2637797026363877
+    },
+    {
+      "variant": "camera",
+      "synthetic_images": 450,
+      "cache_key": "14c2f04440be000ec89cbc953dc01b5219ee0eb79dfa87afc2614a9fff0b779e",
+      "result_sha256": "40b5743495a7eddad6093fdff5ec83efc5c15dfa21b8cd098e08b8300cc8293c",
+      "dinov2_fid": 1647.214239933113,
+      "dinov2_kid": 72.561177588064,
+      "real_map50": 0.16939304828835422,
+      "real_map50_95": 0.08601152488879696
+    },
+    {
+      "variant": "noise",
+      "synthetic_images": 450,
+      "cache_key": "b21bf6395bfa1b4a64cfc4e7e51f3f13b3877822a4aac51b1e1f8a8a185858b0",
+      "result_sha256": "b21db5289c998f60dbcd2e2e5f3adbbd042284eeca2c1c0ed5f4bfb481af17ca",
+      "dinov2_fid": 1629.325941315081,
+      "dinov2_kid": 79.6009226986743,
+      "real_map50": 0.4135862382003508,
+      "real_map50_95": 0.2719878924667403
+    },
+    {
+      "variant": "background",
+      "synthetic_images": 450,
+      "cache_key": "dac65c1e6905ead0cb0c0b3dfd56b07b5a4c3ad02700540f957f6db19bb86928",
+      "result_sha256": "dca27fe40f3b08b5cd9a12102b276cea6213f13f595994af22a7f593c326f3d6",
+      "dinov2_fid": 1533.3723419290857,
+      "dinov2_kid": 68.7175382528925,
+      "real_map50": 0.46736213476669386,
+      "real_map50_95": 0.3478349519932089
+    },
+    {
+      "variant": "high_randomization",
+      "synthetic_images": 450,
+      "cache_key": "e7f6a6026ff54c50cdf7c91a9981c44adafa86641da8ef6527bb76436965015e",
+      "result_sha256": "e4109fc3451229546ae7e96b17d510007b42a28bc9ccd7c9051b1087e7f63e6d",
+      "dinov2_fid": 1573.4140979597746,
+      "dinov2_kid": 61.214911038572716,
+      "real_map50": 0.612583522892483,
+      "real_map50_95": 0.44660974125904707
+    }
+  ],
+  "correlations": {
+    "dinov2_fid": {
+      "real_map50": {
+        "pearson": -0.674513051620244,
+        "spearman": -0.7500000000000002
+      },
+      "real_map50_95": {
+        "pearson": -0.7355177296520911,
+        "spearman": -0.7500000000000002
+      }
+    },
+    "dinov2_kid": {
+      "real_map50": {
+        "pearson": -0.5515037346539424,
+        "spearman": -0.6071428571428572
+      },
+      "real_map50_95": {
+        "pearson": -0.6004603114318893,
+        "spearman": -0.6071428571428572
+      }
+    }
+  },
+  "limitations": [
+    "DINOv2 feature distances, not standard Inception FID/KID",
+    "FID is biased at small sample sizes; KID is unbiased and may be negative",
+    "Seven single-seed variants; correlations are exploratory, not causal",
+    "Real test images also serve as the gap reference; no independent predictive validation"
+  ]
+}

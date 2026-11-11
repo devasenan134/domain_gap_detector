@@ -1,0 +1,38 @@
+{
+  "variant": "noise",
+  "weights": "/home/devs/code/domain_gap_detector_sweep/runs/detect/noise/weights/best.pt",
+  "train_cfg": {
+    "model": "yolov8n.pt",
+    "epochs": 50,
+    "patience": 0,
+    "imgsz": 640,
+    "batch": 8,
+    "device": 0,
+    "workers": 4,
+    "seed": 0
+  },
+  "real_map50": 0.4135862382003508,
+  "real_map50_95": 0.2719878924667403,
+  "real_precision": 0.3823806560439135,
+  "real_recall": 0.48339021064780696,
+  "real_map50_95_per_class": {
+    "002_master_chef_can": 0.4420444217171709,
+    "003_cracker_box": 0.242922576657817,
+    "005_tomato_soup_can": 0.1864894071249747,
+    "006_mustard_bottle": 0.3651478565419116,
+    "011_banana": 0.7061975389505682,
+    "021_bleach_cleanser": 0.053560126743190585,
+    "035_power_drill": 0.16154267189224028,
+    "037_scissors": 0.017998540106049093
+  },
+  "real_map50_per_class": {
+    "002_master_chef_can": 0.513540175053778,
+    "003_cracker_box": 0.4257058718013207,
+    "005_tomato_soup_can": 0.22829331316646817,
+    "006_mustard_bottle": 0.7372719474012388,
+    "011_banana": 0.9836503406397065,
+    "021_bleach_cleanser": 0.07800513027583764,
+    "035_power_drill": 0.3159588034471455,
+    "037_scissors": 0.026264323817311093
+  }
+}
