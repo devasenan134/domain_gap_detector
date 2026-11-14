@@ -1,6 +1,104 @@
 
 # Project: sim2real
 
+Synthetic-to-real object detection with directly runnable Python files. The
+delivery scope is local scripts for detection, gap scoring, and batch drift
+checks; no server or container is needed.
+
+## Run the scripts
+
+From the repository root, in the project's Python environment:
+
+```sh
+python detect.py path/to/image.png --weights weights/high_randomization.pt
+python gap_score.py path/to/synthetic_batch --reference data/yolo_dataset/test/images
+python drift_check.py path/to/incoming_batch --reference path/to/real_reference
+```
+
+`detect.py` accepts one PNG/JPEG or a folder and prints one JSON record per image,
+including pixel-coordinate boxes, class names, confidence, and timing. It uses a
+local checkpoint and does not download one automatically. This workspace has
+`weights/high_randomization.pt` restored from the verified checkpoint backup;
+on the sweep machine you can instead pass
+`--weights runs/detect/high_randomization/weights/best.pt`. Weights are gitignored,
+so a fresh clone needs your trained checkpoint.
+
+`gap_score.py` accepts a folder with at least two images and prints JSON with
+DINOv2-space FID/KID. It compares the batch with the reference, without training
+or requiring detector sweep results. Lower means closer; this is not predicted
+mAP. The default reference is `data/yolo_dataset/test/images`.
+
+`drift_check.py` accepts an incoming folder and a **disjoint** real reference
+folder, with at least two images each. It prints an RBF-MMD² statistic, a
+permutation p-value, and `drift_detected`; it also appends each successful result
+to `runs/drift.jsonl` (override with `--log PATH`). A drift alert is JSON data,
+not a nonzero exit status. Errors do exit nonzero. Do not compare a subset
+against a reference that already contains those same images; shared paths are
+rejected, and copied duplicates should also be avoided.
+
+Gap and drift commands reuse the sweep's pinned DINOv2-small model commit and
+cache embeddings under `data/embeddings/`. First use downloads the model; later
+cache hits do not load it. They share `--device cpu|mps|cuda` (automatically
+selected by default) and `--batch-size 16`. Detection has `--device` and
+`--confidence 0.25`. Progress goes to stderr; stdout is JSON, so output can be
+redirected with `> result.json` (or `> detections.jsonl` for detection).
+
+The drift test follows the [kernel two-sample test approach](https://jmlr.org/papers/v13/gretton12a.html):
+Gaussian RBF kernel, pooled median squared-distance bandwidth, and 199 label
+permutations at alpha 0.05. The p-value includes the observed assignment and
+counts ties. Seed 0 makes subsampling and permutation results reproducible.
+At most 256 images from each distribution are used in the quadratic test;
+reported counts identify the actual sample sizes. This is a per-batch test,
+not continuous monitoring, a calibrated accuracy predictor, or proof of no
+drift when the test does not reject. Small batches have limited power, correlated
+frames can violate exchangeability, and repeated checks are not corrected for
+multiple testing. The permutation threshold is reported for context; the
+p-value decides alerts, including finite-permutation ties.
+
+### Drift demonstration
+
+Create disjoint reference/control folders and a deliberately darkened control
+from the real test images (the random split is an engineering smoke test):
+
+```sh
+python - <<'PY'
+import shutil
+from pathlib import Path
+import numpy as np
+from PIL import Image, ImageEnhance
+paths = sorted(Path('data/yolo_dataset/test/images').glob('*.png'))
+order = np.random.default_rng(0).permutation(len(paths))
+assert len(paths) >= 320, 'Needs 320 real test images'
+for name, indices in [('reference', order[:256]), ('normal', order[256:320]), ('dark', order[256:320])]:
+    folder = Path('data/cli_demo') / name
+    folder.mkdir(parents=True, exist_ok=True)
+    for i in indices:
+        if name == 'dark':
+            with Image.open(paths[i]) as image:
+                ImageEnhance.Brightness(image.convert('RGB')).enhance(.15).save(folder / paths[i].name)
+        else:
+            shutil.copyfile(paths[i], folder / paths[i].name)
+PY
+python gap_score.py data/cli_demo/normal --reference data/cli_demo/reference
+python drift_check.py data/cli_demo/normal --reference data/cli_demo/reference
+python drift_check.py data/cli_demo/dark --reference data/cli_demo/reference
+```
+
+The measured local CPU run is saved in `experiments/script_demo.json`: the normal
+batch was not flagged (MMD² 0.00472, p=0.87), while the dark batch was flagged
+(MMD² 0.03243, p=0.005). Detection on a real test image returned six detections,
+and the normal batch gap scores were FID 229.86 and KID −1.08. This negative KID
+is a valid unbiased estimate, not a parsing error. The random image split may
+contain correlated video frames, so these are smoke-test outcomes, not a
+production false-alarm estimate or an accuracy study.
+
+Script checks (no model download):
+
+```sh
+python -m unittest discover -s tests
+python -m unittest discover -s src/gap_scorer -p 'test_*.py'
+```
+
 ## Data related:
 YCB-V (YCB Video Dataset): Contains 21 household and kitchen objects with rich textures and colors (e.g., cracker boxes, mustard bottles, soup cans). It features complex real-world clutter, making it excellent for testing object recognition in messy environments.
 

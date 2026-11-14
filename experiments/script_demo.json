@@ -1,0 +1,63 @@
+{
+  "purpose": "Local CPU smoke test of runnable Python scripts; not an accuracy or latency benchmark",
+  "timestamp": "2026-11-14T06:10:59.456745+00:00",
+  "model": "facebook/dinov2-small",
+  "revision": "ed25f3a31f01632728cabb09d1542f84ab7b0056",
+  "demo": {
+    "real_test_images": 750,
+    "reference_images": 256,
+    "held_out_images": 64,
+    "split_seed": 0,
+    "dark_brightness_factor": 0.15,
+    "preparation": "README.md: Drift demonstration; random split of sorted real test PNG paths"
+  },
+  "detect": {
+    "image": "data/yolo_dataset/test/images/scene000052_000520.png",
+    "weights_sha256": "a17cdb4c9c9689439b8602b1795f9c2b88d7dadcdc178048ac8f6f948624db63",
+    "detections": 6,
+    "classes": [
+      "002_master_chef_can",
+      "005_tomato_soup_can",
+      "006_mustard_bottle"
+    ]
+  },
+  "gap_score_normal": {
+    "dinov2_fid": 229.85506274204795,
+    "dinov2_kid": -1.0808351657810817,
+    "reference_cache_key": "7049f247f31e3b35a7d93fe8ba08f3afc779338e9364e4704dc9e8dbd0808885",
+    "incoming_cache_key": "1c740100d6f0545aea41c026ac8a7d8e6a819659a33d4e9baed4c95ba8e92bc7"
+  },
+  "normal_drift": {
+    "mmd_squared": 0.0047156027068312395,
+    "p_value": 0.87,
+    "drift_detected": false,
+    "permutation_threshold": 0.011793520830750852,
+    "permutations": 199,
+    "alpha": 0.05,
+    "seed": 0,
+    "rbf_sigma_squared": 2178.395826954663,
+    "reference_samples_used": 256,
+    "incoming_samples_used": 64,
+    "reference_cache_key": "7049f247f31e3b35a7d93fe8ba08f3afc779338e9364e4704dc9e8dbd0808885",
+    "incoming_cache_key": "1c740100d6f0545aea41c026ac8a7d8e6a819659a33d4e9baed4c95ba8e92bc7"
+  },
+  "dark_drift": {
+    "mmd_squared": 0.03243088890958666,
+    "p_value": 0.005,
+    "drift_detected": true,
+    "permutation_threshold": 0.011750407167499342,
+    "permutations": 199,
+    "alpha": 0.05,
+    "seed": 0,
+    "rbf_sigma_squared": 2161.0299348249273,
+    "reference_samples_used": 256,
+    "incoming_samples_used": 64,
+    "reference_cache_key": "7049f247f31e3b35a7d93fe8ba08f3afc779338e9364e4704dc9e8dbd0808885",
+    "incoming_cache_key": "266ed9e1e279856b79e37f056bd21d25729e70210e0ba611d043e00ed98c2435"
+  },
+  "limitations": [
+    "Random image split may contain correlated frames; demonstration is not a calibrated production false-alarm study",
+    "Dark and normal controls are transformations of the same held-out batch, each disjoint from the reference",
+    "A detected distribution shift does not establish a change in detector accuracy"
+  ]
+}

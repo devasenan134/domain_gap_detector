@@ -16,11 +16,11 @@ project builds a system that:
    no-training-required metric.
 3. Empirically validates that this gap metric correlates with actual real-world
    detection performance, via a controlled ablation across randomization settings.
-4. Wraps the trained detector as a served, monitored inference system — not just a
-   notebook result.
+4. Provides directly runnable Python scripts for detection, gap scoring, and
+   batch drift checks.
 
-This is an engineering-first project: the deliverable is a working, deployable
-system with one honest, well-scoped empirical finding (which randomization axes
+This is an engineering-first project: the deliverable is a working Python
+workflow with one honest, well-scoped empirical finding (which randomization axes
 matter most for transfer), not a claim of novel research.
 
 ## 2. Task and Data
@@ -80,27 +80,32 @@ This score requires no training. Compare the gap-score ranking of variants again
 Using the Phase B/C data, isolate which individual randomization axes (lighting vs. texture vs. render noise vs. pose) contribute most to closing the domain gap, and whether that differs by object (e.g., low-texture objects like the banana may be more lighting-sensitive than high-texture objects like the cracker box).
 This is the one legitimate empirical claim in the project — keep it honest and bounded to what the data actually shows.
 
-### Phase E — Serving
-Wrap the best-performing detector as a Dockerized FastAPI inference service:
-endpoint accepts an image, returns detections.
-Include the gap scorer as a second endpoint: given a new synthetic batch, return a predicted-gap score against the stored real reference embeddings, without requiring a training run.
+### Phase E — Runnable scripts (revised November 14, 2026)
+Run the best-performing detector with `python detect.py IMAGE --weights BEST.pt`.
+Run `python gap_score.py BATCH --reference REAL` to compute DINOv2-space FID/KID
+against cached real reference embeddings without training. Results are JSON;
+the measured gap is not a calibrated prediction of detector mAP.
+FastAPI, HTTP endpoints, and Docker are outside the revised delivery scope.
 
 ### Phase F — Drift monitoring
-A lightweight monitor that compares incoming "production" image embeddings against the stored real reference distribution (e.g., MMD or KS-test on feature projections), flags when drift exceeds a threshold, and logs the result.
-Doesn't need to be elaborate — a working detector with a sensible threshold and a log is sufficient.
+Run `python drift_check.py BATCH --reference REAL` to compare disjoint incoming
+and reference image batches using RBF-MMD and a permutation test at alpha 0.05.
+The script returns a drift decision and appends a JSONL log. Demonstrate it on
+held-out normal images and a deliberately shifted batch. This is a batch check,
+not a continuously running monitor or evidence of detector accuracy loss.
 
 ## 5. System Architecture
 
 ```
 synthetic-domain-gap/
 ├── blender/              # BlenderProc render scripts, randomization configs (YAML per variant)
+├── detect.py             # image/folder -> detections (JSONL)
+├── gap_score.py          # image folder -> DINOv2 FID/KID (JSON)
+├── drift_check.py        # held-out image folder -> drift decision + JSONL log
 ├── data/                 # synthetic variants + real YCB-V eval set (gitignored/DVC)
 ├── src/
-│   ├── detector/          # YOLO train/eval wrappers, config-driven (Hydra)
-│   ├── gap_scorer/         # FID/KID computation over DINOv2 features
-│   ├── drift/              # drift monitor (MMD/KS-test)
-│   └── api/                # FastAPI app: /detect, /gap-score, /drift-check
-├── docker/
+│   ├── detector/          # YAML-driven YOLO train/eval wrapper
+│   └── gap_scorer/        # DINOv2 features, FID/KID, RBF-MMD drift test
 ├── experiments/            # W&B run configs and sweep results
 ├── notebooks/               # analysis and plots only, no pipeline logic
 └── README.md
@@ -114,9 +119,9 @@ synthetic-domain-gap/
   — reported honestly even if the correlation is moderate, not overstated.
 - A short ablation write-up: which randomization axis mattered most, and for which
   object types.
-- A working Dockerized API, callable with `curl` or a simple client script,
-  documented in the README.
-- A working drift monitor demonstrated on a deliberately shifted input batch
+- Working Python files for detection, batch gap scoring, and drift checks,
+  with documented terminal commands and JSON outputs.
+- A working drift check demonstrated on a deliberately shifted input batch
   (e.g., real images under different lighting) to show it actually fires.
 
 ## 7. Deliverables
